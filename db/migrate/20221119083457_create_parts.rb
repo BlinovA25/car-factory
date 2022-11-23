@@ -4,6 +4,7 @@ class CreateParts < ActiveRecord::Migration[6.0]
       t.string :serial_number
       t.string :title
       t.decimal :price
+      t.integer :child
 
       t.timestamps
     end

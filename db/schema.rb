@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 2022_11_19_091049) do
   create_table "car_patterns", force: :cascade do |t|
     t.string "name"
     t.string "description"
+    t.integer "child"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -44,6 +45,7 @@ ActiveRecord::Schema.define(version: 2022_11_19_091049) do
     t.string "serial_number"
     t.string "title"
     t.decimal "price"
+    t.integer "child"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

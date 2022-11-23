@@ -3,6 +3,7 @@ class CreateCarPatterns < ActiveRecord::Migration[6.0]
     create_table :car_patterns do |t|
       t.string :name
       t.string :description
+      t.integer :child
 
       t.timestamps
     end
