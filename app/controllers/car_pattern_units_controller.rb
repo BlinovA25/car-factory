@@ -1,5 +1,6 @@
 class CarPatternUnitsController < ApplicationController
   before_action :set_car_pattern_unit, only: [:show, :update, :destroy]
+  before_action :set_car_pattern, only: [:create]
 
   # GET /car_pattern_units
   def index
@@ -15,10 +16,9 @@ class CarPatternUnitsController < ApplicationController
 
   # POST /car_pattern_units
   def create
-    @car_pattern_unit = CarPatternUnit.new(car_pattern_unit_params)
-
-    if @car_pattern_unit.save
-      render json: @car_pattern_unit, status: :created, location: @car_pattern_unit
+    @car_pattern_unit = CarPatternUnit.new(car_pattern_id: params[:car_pattern_id], part_id: car_pattern_unit_params[:part_id])
+    if @car_pattern_unit.save && unique?
+      render json: @car_pattern_unit, status: :created
     else
       render json: @car_pattern_unit.errors, status: :unprocessable_entity
     end
@@ -40,13 +40,22 @@ class CarPatternUnitsController < ApplicationController
 
   private
 
+  # Checks if CarPatternUnit is unique
+  def unique?
+    CarPatternUnit.where(car_pattern_id: @car_pattern.id, part_id: @car_pattern_unit.part_id).count < 1
+  end
+
   # Use callbacks to share common setup or constraints between actions.
   def set_car_pattern_unit
     @car_pattern_unit = CarPatternUnit.find(params[:id])
   end
 
+  def set_car_pattern
+    @car_pattern = CarPattern.find(params[:car_pattern_id])
+  end
+
   # Only allow a trusted parameter "white list" through.
   def car_pattern_unit_params
-    params.require(:car_pattern_unit).permit(:car_pattern_id, :part_id)
+    params.require(:car_pattern_unit).permit(:part_id)
   end
 end
