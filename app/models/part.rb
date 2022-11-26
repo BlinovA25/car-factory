@@ -3,6 +3,7 @@ class Part < ApplicationRecord
 
   scope :actual, -> { where(child: nil) }
 
+  # TODO: change ID generation
   def gen_id_and_timestamps
     new_id = Part.ids.max + 1
     assign_attributes({ id: new_id, created_at: DateTime.now, updated_at: DateTime.now })
