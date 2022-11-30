@@ -3,18 +3,19 @@ class Part < ApplicationRecord
 
   scope :actual, -> { where(child: nil) }
 
-  # TODO: change ID generation
-  def gen_id_and_timestamps
-    new_id = Part.ids.max + 1
-    assign_attributes({ id: new_id, created_at: DateTime.now, updated_at: DateTime.now })
-  end
-
   # Creates copy of existing Part
   def self.create_copy(new_params, original_object)
-    part = original_object.dup
+    part = Part.new(original_object.dup.attributes)
     part.assign_attributes(new_params)
-    part.gen_id_and_timestamps
     part
+  end
+
+  # Returns last ancestor of Part
+  def last_ancestor
+    Part.all.each do |part|
+      return part if part.child == id
+    end
+    return nil
   end
 
   # Returns list of all ancestors for current part

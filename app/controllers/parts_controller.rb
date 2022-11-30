@@ -35,8 +35,8 @@ class PartsController < ApplicationController
     Part.transaction do
       @new_part = Part.create_copy(part_params, @part)
 
-      if @part.update(child: @new_part.id) && @new_part.save
-        render json: @new_part
+      if @new_part.save
+        render json: @new_part if @part.update(child: @new_part.id)
       else
         render json: @new_part.errors, status: :unprocessable_entity
       end
