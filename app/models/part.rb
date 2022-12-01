@@ -19,11 +19,11 @@ class Part < ApplicationRecord
   end
 
   # Returns list of all ancestors for current part
-  def self.get_ancestors(child_part, ancestors_list = [])
+  def get_ancestors(ancestors_list = [])
     Part.all.each do |part|
-      if part.child == child_part.id
+      if part.child == id
         ancestors_list << part
-        get_ancestors(part, ancestors_list)
+        part.get_ancestors(ancestors_list)
       end
     end
     ancestors_list

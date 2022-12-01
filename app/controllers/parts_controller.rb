@@ -9,7 +9,7 @@ class PartsController < ApplicationController
   end
 
   def show_ancestors
-    @parts = Part.get_ancestors(Part.find(params[:part_id]))
+    @parts = Part.find(params[:part_id]).get_ancestors
 
     render json: @parts
   end
