@@ -1,5 +1,6 @@
 class PartsController < ApplicationController
   before_action :set_part, only: %i[show update destroy]
+  # after_update CarPattern.amoeba_dup_car_pattern(@new_part)
 
   # GET /parts
   def index
@@ -34,9 +35,9 @@ class PartsController < ApplicationController
   def update
     Part.transaction do
       @new_part = Part.create_copy(part_params, @part)
-
-      if @new_part.save
-        render json: @new_part if @part.update(child: @new_part.id)
+      if @new_part.save && @part.update(child: @new_part.id)
+        CarPattern.amoeba_dup_car_pattern(@new_part)
+        render json: @new_part
       else
         render json: @new_part.errors, status: :unprocessable_entity
       end
