@@ -1,9 +1,7 @@
 class Part < ApplicationRecord
-  include Ancestors
+  include AncestorsConcern
 
   has_many :car_pattern_units
-
-  scope :actual, -> { where(child: nil) }
 
   # Creates copy of existing Part
   def self.create_copy(new_params, original_object)
