@@ -1,4 +1,6 @@
 class Part < ApplicationRecord
+  include Ancestors
+
   has_many :car_pattern_units
 
   scope :actual, -> { where(child: nil) }
@@ -9,24 +11,4 @@ class Part < ApplicationRecord
     part.assign_attributes(new_params)
     part
   end
-
-  # Returns last ancestor of Part
-  def last_ancestor
-    Part.all.each do |part|
-      return part if part.child == id
-    end
-    return nil
-  end
-
-  # Returns list of all ancestors for current part
-  def get_ancestors(ancestors_list = [])
-    Part.all.each do |part|
-      if part.child == id
-        ancestors_list << part
-        part.get_ancestors(ancestors_list)
-      end
-    end
-    ancestors_list
-  end
-
 end
