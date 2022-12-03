@@ -1,9 +1,16 @@
 class PartsController < ApplicationController
-  before_action :set_part, only: [:show, :update, :destroy]
+  before_action :set_part, only: %i[show update destroy]
+  # after_update CarPattern.amoeba_dup_car_pattern(@new_part)
 
   # GET /parts
   def index
-    @parts = Part.all
+    @parts = Part.actual
+
+    render json: @parts
+  end
+
+  def show_ancestors
+    @parts = Part.find(params[:part_id]).get_ancestors
 
     render json: @parts
   end
@@ -17,7 +24,7 @@ class PartsController < ApplicationController
   def create
     @part = Part.new(part_params)
 
-    if @part.save
+    if unique? && @part.save
       render json: @part, status: :created, location: @part
     else
       render json: @part.errors, status: :unprocessable_entity
@@ -26,10 +33,14 @@ class PartsController < ApplicationController
 
   # PATCH/PUT /parts/1
   def update
-    if @part.update(part_params)
-      render json: @part
-    else
-      render json: @part.errors, status: :unprocessable_entity
+    Part.transaction do
+      @new_part = Part.create_copy(part_params, @part)
+      if @new_part.save && @part.update(child: @new_part.id)
+        CarPattern.amoeba_dup_car_pattern(@new_part)
+        render json: @new_part
+      else
+        render json: @new_part.errors, status: :unprocessable_entity
+      end
     end
   end
 
@@ -39,6 +50,11 @@ class PartsController < ApplicationController
   end
 
   private
+
+  # Check the uniqueness of Part by title
+  def unique?
+    Part.where(title: @part.title).count < 1
+  end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_part
