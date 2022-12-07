@@ -9,6 +9,11 @@ module AncestorsConcern
     # Returns only latest versions of each instance
     scope :actual, -> { where(child: nil) }
 
+    # checks if object is actual(it has the latest version)
+    def actual?
+      child.nil?
+    end
+
     # Returns last ancestor for current instance
     def last_ancestor
       self.class.all.each do |part|
