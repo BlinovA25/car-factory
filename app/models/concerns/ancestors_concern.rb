@@ -24,11 +24,10 @@ module AncestorsConcern
 
     # Returns list of all ancestors for current instance
     def get_ancestors(ancestors_list = [])
-      self.class.all.each do |part|
-        if part.child == id
-          ancestors_list << part
-          part.get_ancestors(ancestors_list)
-        end
+      ancestor = self.class.find_by(child:id)
+      unless ancestor.nil?
+        ancestors_list << ancestor
+        ancestor.get_ancestors(ancestors_list)
       end
       ancestors_list
     end
