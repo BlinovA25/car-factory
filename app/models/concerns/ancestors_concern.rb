@@ -16,10 +16,9 @@ module AncestorsConcern
 
     # Returns last ancestor for current instance
     def last_ancestor
-      self.class.all.each do |part|
-        return part if part.child == id
-      end
-      return nil
+      self.class.find_by(child:id)
+    rescue ActiveRecord::RecordNotFound
+      nil
     end
 
     # Returns list of all ancestors for current instance
