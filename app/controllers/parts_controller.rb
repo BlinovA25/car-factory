@@ -34,7 +34,7 @@ class PartsController < ApplicationController
   # PATCH/PUT /parts/1
   def update
     Part.transaction do
-      @new_part = Part.create_copy(part_params, @part)
+      @new_part = @part.create_copy(part_params)
       if @new_part.save && @part.update(child: @new_part.id)
         CarPattern.amoeba_dup_car_pattern(@new_part)
         render json: @new_part
