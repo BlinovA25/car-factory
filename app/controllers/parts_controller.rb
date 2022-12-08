@@ -46,7 +46,7 @@ class PartsController < ApplicationController
 
   # DELETE /parts/1
   def destroy
-    @part.destroy
+    @part.update(deleted_at: DateTime.now)
   end
 
   private
