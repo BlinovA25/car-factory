@@ -2,8 +2,23 @@ class CarPattern < ApplicationRecord
   has_many :car_pattern_units
   has_many :cars
 
+  include AncestorsConcern
+
   amoeba do
     enable
+  end
+
+  # Creates copy of object with new ID and timestamps and updates original object child value
+  def copy
+    new_car_pattern = amoeba_dup
+    new_car_pattern.save
+    update(child: new_car_pattern.id)
+    new_car_pattern
+  end
+
+  # TODO: create general realization
+  def self.next_id
+    ActiveRecord::Base.connection.execute("select last_value from car_patterns_id_seq").first["last_value"].to_i
   end
 
   # updates car patterns including new_part
