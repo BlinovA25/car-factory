@@ -3,6 +3,7 @@ class CarPattern < ApplicationRecord
   has_many :cars
 
   include AncestorsConcern
+  include IdsConcern
 
   amoeba do
     enable
@@ -14,11 +15,6 @@ class CarPattern < ApplicationRecord
     new_car_pattern.save
     update(child: new_car_pattern.id)
     new_car_pattern
-  end
-
-  # TODO: create general realization
-  def self.next_id
-    ActiveRecord::Base.connection.execute("select last_value from car_patterns_id_seq").first["last_value"].to_i
   end
 
   # updates car patterns including new_part
