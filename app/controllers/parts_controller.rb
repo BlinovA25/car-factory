@@ -33,21 +33,27 @@ class PartsController < ApplicationController
 
   # PATCH/PUT /parts/1
   def update
-    Part.transaction do
-      @new_part = Part.create_copy(part_params, @part)
-      if @new_part.save && @part.update(child: @new_part.id)
-        CarPattern.amoeba_dup_car_pattern(@new_part)
-        render json: @new_part
-      else
-        render json: @new_part.errors, status: :unprocessable_entity
+    @new_part = Part.create_copy(part_params, @part)
+    if @new_part.save && @part.update(child: @new_part.id)
+      CarPattern.all.each do |car_pattern|
+        car_pattern.car_pattern_units.each do |car_pattern_unit|
+          if car_pattern_unit.part_id == @part.id
+            car_pattern.copy
+            car_pattern_unit.update(part_id: @new_part.id)
+          end
+        end
       end
+
+      render json: @new_part
+    else
+      render json: @new_part.errors, status: :unprocessable_entity
     end
   end
 
   # DELETE /parts/1
-  def destroy
-    @part.update(deleted_at: DateTime.now)
-  end
+  # def destroy
+  #   @part.update(deleted_at: DateTime.now)
+  # end
 
   private
 
