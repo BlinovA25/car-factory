@@ -6,7 +6,7 @@ module IdsConcern
 
   class_methods do
     def next_id
-      ActiveRecord::Base.connection.execute("select last_value from #{table_name}_id_seq").first["last_value"].to_i
+      ActiveRecord::Base.connection.execute("select last_value from #{table_name}_id_seq").first["last_value"].to_i + 1
     end
   end
 end
