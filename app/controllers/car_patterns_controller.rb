@@ -26,6 +26,8 @@ class CarPatternsController < ApplicationController
 
   # PATCH/PUT /car_patterns/1
   def update
+    @car_pattern = @car_pattern.copy
+
     if @car_pattern.update(car_pattern_params)
       render json: @car_pattern
     else
