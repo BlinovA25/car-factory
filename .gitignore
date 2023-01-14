@@ -28,4 +28,6 @@
 
 /.iml
 
+# Ignore .idea files
+.idea/
 .idea/*
