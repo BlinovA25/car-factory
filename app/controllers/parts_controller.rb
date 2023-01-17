@@ -39,14 +39,20 @@ class PartsController < ApplicationController
         CarPattern.amoeba_dup_car_pattern(@new_part)
         render json: @new_part
       else
-        render json: @new_part.errors, status: :unprocessable_entity
+        raise "Part wasn't updated successfully"
+        # render json: @new_part.errors, status: :unprocessable_entity
       end
     end
   end
 
   # DELETE /parts/1
   def destroy
-    @part.destroy
+    if CarPatternUnit.where(part_id: @part.id).none?
+      @part.destroy
+    else
+      raise "Delete CarPatternUnits first"
+      # render json: "Delete CarPatternUnits first"
+    end
   end
 
   private
