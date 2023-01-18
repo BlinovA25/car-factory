@@ -6,6 +6,6 @@ RSpec.describe CarPatternUnit, type: :model do
     part = FactoryBot.create(:part)
 
     car_pattern_unit = FactoryBot.create(:car_pattern_unit, car_pattern_id: car_pattern.id, part_id: part.id)
-    car_pattern_unit.should be_an_instance_of CarPatternUnit
+    expect(car_pattern_unit).to be_an_instance_of CarPatternUnit
   end
 end
