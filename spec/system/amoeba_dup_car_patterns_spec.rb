@@ -12,8 +12,6 @@ RSpec.describe "AmoebaDupCarPatterns", type: :system do
 
     new_part = FactoryBot.create(:part, title: "new_part", price: 1200)
 
-    p new_part
-
     # CarPattern.amoeba_dup_car_pattern(new_part)
 
     # expect { FactoryBot.create(:new) }.to change { New.all.count }.by(1)
