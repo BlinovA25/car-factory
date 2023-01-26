@@ -37,6 +37,8 @@ end
 group :test do
   gem 'database_cleaner-active_record'
   gem 'webmock'
+  gem 'capybara'
+  gem 'selenium-webdriver'
 end
 
 group :development do

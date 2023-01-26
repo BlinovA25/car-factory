@@ -19,7 +19,7 @@ module AncestorsConcern
       self.class.all.each do |part|
         return part if part.child == id
       end
-      return nil
+      return self
     end
 
     # Returns list of all ancestors for current instance
