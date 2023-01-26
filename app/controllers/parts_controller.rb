@@ -46,14 +46,14 @@ class PartsController < ApplicationController
   end
 
   # DELETE /parts/1
-  def destroy
-    if CarPatternUnit.where(part_id: @part.id).none?
-      @part.destroy
-    else
-      raise "Delete CarPatternUnits first"
-      # render json: "Delete CarPatternUnits first"
-    end
-  end
+  # def destroy
+  #   if CarPatternUnit.where(part_id: @part.id).none?
+  #     @part.destroy
+  #   else
+  #     raise "Delete CarPatternUnits first"
+  #     # render json: "Delete CarPatternUnits first"
+  #   end
+  # end
 
   private
 
