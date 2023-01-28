@@ -6,15 +6,15 @@ module CopyConcern
 
   # Instance methods
   included do
+    def create_copy(new_params = {})
+      object = self.class.new(self.dup.attributes)
+      object.assign_attributes(new_params)
+      object
+    end
   end
 
   # Class methods
   class_methods do
     # Creates copy of existing object
-    def create_copy(new_params, original_object)
-      object = new(original_object.dup.attributes)
-      object.assign_attributes(new_params)
-      object
-    end
   end
 end

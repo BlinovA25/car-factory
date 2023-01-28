@@ -9,7 +9,7 @@ RSpec.describe CarPattern, type: :model do
 
   it 'car_pattern CopyConcern methods' do
     # passing empty list of new params to create a full copy
-    car_pattern_copy = CarPattern.create_copy({}, car_pattern)
+    car_pattern_copy = car_pattern.create_copy
 
     expect(car_pattern.name).to eq car_pattern_copy.name
   end

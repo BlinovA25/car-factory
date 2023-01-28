@@ -33,11 +33,6 @@ class CarPatternsController < ApplicationController
     end
   end
 
-  # DELETE /car_patterns/1
-  def destroy
-    @car_pattern.destroy
-  end
-
   private
 
   # Use callbacks to share common setup or constraints between actions.
