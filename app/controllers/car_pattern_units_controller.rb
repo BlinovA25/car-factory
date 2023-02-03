@@ -16,11 +16,14 @@ class CarPatternUnitsController < ApplicationController
 
   # POST /car_pattern_units
   def create
-    @car_pattern_unit = CarPatternUnit.new(car_pattern_id: params[:car_pattern_id], part_id: car_pattern_unit_params[:part_id])
-    if @car_pattern_unit.save && unique?
-      render json: @car_pattern_unit, status: :created
-    else
-      render json: @car_pattern_unit.errors, status: :unprocessable_entity
+    CarPatternUnit.transaction do
+      @car_pattern = CarPattern.find(params[:car_pattern_id]).amoeba_dup
+      @car_pattern_unit = @car_pattern.car_pattern_units.new(part_id: car_pattern_unit_params[:part_id])
+      if @car_pattern_unit.save && unique?
+        render json: @car_pattern_unit, status: :created
+      else
+        render json: @car_pattern_unit.errors, status: :unprocessable_entity
+      end
     end
   end
 
@@ -42,7 +45,7 @@ class CarPatternUnitsController < ApplicationController
 
   # Checks if CarPatternUnit is unique
   def unique?
-    CarPatternUnit.where(car_pattern_id: @car_pattern.id, part_id: @car_pattern_unit.part_id).count < 1
+    CarPatternUnit.where(car_pattern_id: @car_pattern.id, part_id: @car_pattern_unit.part_id).none?
   end
 
   # Use callbacks to share common setup or constraints between actions.
