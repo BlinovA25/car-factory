@@ -6,15 +6,24 @@ module CopyConcern
 
   # Instance methods
   included do
+    def actual?
+      child.nil?
+    end
+
+    def copy(new_params = {})
+      ActiveRecord::Base.transaction do
+        object = self.class.new(dup.attributes)
+        object.assign_attributes(new_params)
+        object.save!
+        self.update!(child: object.id)
+        object
+      end
+    end
+
+
   end
 
   # Class methods
   class_methods do
-    # Creates copy of existing object
-    def create_copy(new_params, original_object)
-      object = new(original_object.dup.attributes)
-      object.assign_attributes(new_params)
-      object
-    end
   end
 end

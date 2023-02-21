@@ -9,13 +9,14 @@ RSpec.describe CarPattern, type: :model do
 
   it 'car_pattern CopyConcern methods' do
     # passing empty list of new params to create a full copy
-    car_pattern_copy = CarPattern.create_copy({}, car_pattern)
+    car_pattern_copy = car_pattern.copy
 
     expect(car_pattern.name).to eq car_pattern_copy.name
+    expect(car_pattern.child).to eq car_pattern_copy.id
   end
 
   it 'car_pattern actual? method' do
-    expect(car_pattern.actual?).to be true
+    expect(FactoryBot.create(:car_pattern).actual?).to be true
   end
 
   it 'car_pattern last_ancestor method' do
