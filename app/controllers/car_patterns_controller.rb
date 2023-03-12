@@ -10,7 +10,7 @@ class CarPatternsController < ApplicationController
 
   # GET /car_patterns/1
   def show
-    render json: @car_pattern
+    @car_pattern_units = @car_pattern.car_pattern_units
   end
 
   # POST /car_patterns
