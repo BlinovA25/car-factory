@@ -42,7 +42,7 @@ class CarPatternUnitsController < ApplicationController
 
   # Checks if CarPatternUnit is unique
   def unique?
-    CarPatternUnit.where(car_pattern_id: @car_pattern.id, part_id: @car_pattern_unit.part_id).count < 1
+    CarPatternUnit.where(car_pattern_id: @car_pattern.id, part_id: @car_pattern_unit.part_id).none?
   end
 
   # Use callbacks to share common setup or constraints between actions.

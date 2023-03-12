@@ -19,8 +19,6 @@ module CopyConcern
         object
       end
     end
-
-
   end
 
   # Class methods
